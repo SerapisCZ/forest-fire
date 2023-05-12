@@ -7,7 +7,7 @@ public class Tui {
 
     public appModes appMode;
     public int numberOfSteps = 10;
-    private enum appModes {
+    public enum appModes {
         WHILE_BURNING,
         SET_STEPS,
         SHOW_AFTER_STEP
@@ -31,7 +31,7 @@ public class Tui {
                 } else {
                     System.out.println("We will be using the default values.");
                 }
-                System.out.println("");
+                System.out.print(System.lineSeparator());
                 System.out.println("The application can run in these modes:");
                 System.out.println("1) Show next step as long as the forest is burning.");
                 System.out.println("2) Show first X number of steps.");
@@ -49,7 +49,7 @@ public class Tui {
                 } else {
                     throw new NumberFormatException();
                 }
-                System.out.println("");
+                System.out.print(System.lineSeparator());
             } catch(NumberFormatException ex){
                 System.out.println("Sorry, but this is not valid option. Try again.");
                 getUserPreferences();

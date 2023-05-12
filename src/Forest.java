@@ -1,14 +1,10 @@
-import java.io.PrintWriter;
-
 public class Forest {
     ForestTile[][] forest;
-    int forestHeight; //TODO Width and height are switched!!!
+    int forestHeight;
     int forestWidth;
 
     int defaultForestHeight = 10;
     int defaultForestWidth = 10;
-
-    boolean isBurning = true;
 
     public Forest(int height, int width){
         assignForestDimensions(height, width);
@@ -22,12 +18,11 @@ public class Forest {
 
     public void ShowForest(){
         System.out.println("****************************");
-        for (int i = 0; i < forestWidth; i++){
-            for (int k = 0; k < forestHeight; k++){
-                System.out.print(forest[i][k].print());
-                System.out.print(" ");
+        for (ForestTile[] row: forest){
+            for (ForestTile tile: row){
+                System.out.print(tile.print() + " ");
             }
-            System.out.println("");
+            System.out.print(System.lineSeparator());
         }
     }
 
@@ -36,12 +31,19 @@ public class Forest {
         step();
     }
 
+    public boolean isBurning(){
+        for (ForestTile[] row: forest){
+            for (ForestTile tile: row){
+                if (tile.isBurning()) return true;
+            }
+        }
+        return false;
+    }
+
     public void Burn(){
-        isBurning = false;
         for (int i = 0; i < forestWidth; i++) {
             for (int k = 0; k < forestHeight; k++) {
                 if (forest[i][k].isBurning()) {
-                    isBurning = true;
                     // UP
                     int upWidth = i - 1;
                     if (upWidth >= 0 && upWidth < forestWidth) {
@@ -49,7 +51,7 @@ public class Forest {
                     }
                     // DOWN
                     int downWidth = i + 1;
-                    if (downWidth >= 0 && downWidth < forestWidth) {
+                    if (downWidth < forestWidth) {
                         forest[downWidth][k].fireSpread();
                     }
                     // LEFT
@@ -59,7 +61,7 @@ public class Forest {
                     }
                     // RIGHT
                     int rightOffset = k + 1;
-                    if (rightOffset >= 0 && rightOffset < forestHeight) {
+                    if (rightOffset < forestHeight) {
                         forest[i][rightOffset].fireSpread();
                     }
                 }
@@ -70,11 +72,11 @@ public class Forest {
 
     private void assignForestDimensions(int height, int width){
         if (height == 0 || width == 0){
-            forestHeight = defaultForestHeight;
-            forestWidth = defaultForestWidth;
+            forestHeight = defaultForestWidth;
+            forestWidth = defaultForestHeight;
         } else {
-            forestHeight = height;
-            forestWidth = width;
+            forestHeight = width;
+            forestWidth = height;
         }
     }
 

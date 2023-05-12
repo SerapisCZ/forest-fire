@@ -1,48 +1,40 @@
 public class ForestTile {
 
-    private String type;
-    private String nextStepType;
+    private Settings.FOREST_TILE_TYPES type;
+    private Settings.FOREST_TILE_TYPES nextStepType;
     int burnTime;
 
     public ForestTile(){
-        type = "tree";
-        nextStepType = "";
+        type = Settings.FOREST_TILE_TYPES.TREE;
+        nextStepType = null;
         burnTime = 0;
     }
 
     public String print(){
-        String printed = "E";
-        if (type == "tree"){
-            printed = new String(Character.toChars(0x0001F332));
-        } else if (type == "fire") {
-            printed = new String(Character.toChars(0x0001F525));
-        } else if (type == "burned") {
-            printed = "\u2592\u2592";
-        }
-        return printed;
+        return Settings.FOREST_TILES_STRINGS.get(type);
     }
 
     public void fireForceSpread() {
-        nextStepType = "fire";
+        nextStepType = Settings.FOREST_TILE_TYPES.FIRE;
     }
 
     public void fireSpread() {
-        if (type == "tree") {
+        if (type == Settings.FOREST_TILE_TYPES.TREE) {
             int random = (int)(Math.random() * 10 + 1);
-            if (random % 2 == 0) nextStepType = "fire";
+            if (random % 2 == 0) nextStepType = Settings.FOREST_TILE_TYPES.FIRE;
         }
     }
 
     public boolean isBurning(){
-        return (type == "fire");
+        return (type == Settings.FOREST_TILE_TYPES.FIRE);
     }
 
     public void step(){
-        if (nextStepType != ""){
+        if (nextStepType != null){
             type = nextStepType;
-            nextStepType = "";
+            nextStepType = null;
         }
-        if (type == "fire") burnTime++;
-        if (burnTime == 3) type = "burned";
+        if (type == Settings.FOREST_TILE_TYPES.FIRE) burnTime++;
+        if (burnTime == 3) type = Settings.FOREST_TILE_TYPES.BURNED;
     }
 }
